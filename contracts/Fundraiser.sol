@@ -8,7 +8,7 @@ contract Fundraiser {
 	string fundraiserUrl;
 	//version #
 	uint constant version = 1;
-
+	uint storedData;
 	//Data structures for fundraising
 	enum fundraiserState {
 		InProgress, 
@@ -56,9 +56,12 @@ contract Fundraiser {
 		_;
 	}
 
-	//function to initialize fundraiser; also the constructor
+	constructor() public {
+		
+	}
 
-	constructor (uint timeForFundraising, string _fundraiserUrl, address _fundraiserRecipient, uint _fundingGoal) public {
+	//function to initialize fundraiser
+	function initFundraiser (uint timeForFundraising, string _fundraiserUrl, address _fundraiserRecipient, uint _fundingGoal) public {
 		creator = msg.sender;
 		fundraiserRecipient =  _fundraiserRecipient;
 		fundraiserUrl = _fundraiserUrl;
@@ -69,6 +72,13 @@ contract Fundraiser {
 		emit LogFundraiserInitialized(creator, fundraiserRecipient, fundraiserUrl, fundingGoal, timeForFundraising);
 	}
 
+	function set(uint x) public {
+    	storedData = x;
+  	}
+
+  	function get() public view returns (uint) {
+    	return storedData;
+  	}
 	function Donate()
 	public
 	inState(fundraiserState.InProgress) payable returns (uint256)

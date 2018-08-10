@@ -45,28 +45,28 @@ class App extends Component {
      */
 
     const contract = require('truffle-contract')
-    const simpleStorage = contract(SimpleStorageContract)
-    simpleStorage.setProvider(this.state.web3.currentProvider)
+    // const simpleStorage = contract(SimpleStorageContract)
+    // simpleStorage.setProvider(this.state.web3.currentProvider)
 
     const fundraiser = contract(FundraiserContract)
     fundraiser.setProvider(this.state.web3.currentProvider)
-
-    // do I need an instance of my contract? putting this here for now
+  
     var fundraiserInstance
 
     // Declaring this for later so we can chain functions on SimpleStorage.
-    var simpleStorageInstance
+    // var simpleStorageInstance
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
-      simpleStorage.deployed().then((instance) => {
-        simpleStorageInstance = instance
+
+      fundraiser.deployed().then((instance) => {
+        fundraiserInstance = instance
 
         // Stores a given value, 5 by default.
-        return simpleStorageInstance.set(15, {from: accounts[0]})
+        return fundraiserInstance.set(15, {from: accounts[0]})
       }).then((result) => {
         // Get the value from the contract to prove it worked.
-        return simpleStorageInstance.get.call(accounts[0])
+        return fundraiserInstance.get.call(accounts[0])
       }).then((result) => {
         // Update state with the result.
         return this.setState({ storageValue: result.c[0] })
@@ -78,13 +78,15 @@ class App extends Component {
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
+            <a href="#" className="pure-menu-heading pure-menu-link">The Karma Project</a>
         </nav>
+
 
         <main className="container">
           <div className="pure-g">
             <div className="pure-u-1-1">
-              <h1>Good to Go!</h1>
+              <h1> Start a Fundraiser </h1>
+              <button id="initializeFundraiser">Start Fundraiser</button>
               <p>Your Truffle Box is installed and ready.</p>
               <h2>Smart Contract Example</h2>
               <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
